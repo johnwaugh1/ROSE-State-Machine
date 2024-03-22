@@ -28,6 +28,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+//enumerate states
 typedef enum {
 	STATE_OFF, STATE_ACC, STATE_IGN, STATE_ON, KILL_SWITCH, BMS_FAULT, CHARGE
 } State;
@@ -35,6 +36,7 @@ typedef enum {
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+//initialize currentState as off;
 State currentState = STATE_OFF;
 /* USER CODE END PD */
 
@@ -72,6 +74,7 @@ void MX_USB_HOST_Process(void);
 /* USER CODE END 0 */
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+	//if button pressed go through each state
 	if (GPIO_Pin == B1_Pin) {
 		switch (currentState) {
 		case STATE_OFF:
@@ -103,6 +106,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 }
 
 void updateLEDS() {
+	//based on current state update which led combination to show
 	switch (currentState) {
 	case STATE_OFF:
 		HAL_GPIO_WritePin(GPIOD,
@@ -144,21 +148,7 @@ void updateLEDS() {
 		HAL_GPIO_WritePin(GPIOD, LD4_Pin, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(GPIOD, LD5_Pin, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(GPIOD, LD6_Pin, GPIO_PIN_SET);
-//		while (currentState == CHARGE) {
-//			HAL_GPIO_TogglePin(GPIOD, LD3_Pin);
-//			HAL_Delay(500);
-//			HAL_GPIO_TogglePin(GPIOD, LD4_Pin);
-//			HAL_Delay(500);
-//			HAL_GPIO_TogglePin(GPIOD, LD6_Pin);
-//			HAL_Delay(500);
-//			HAL_GPIO_TogglePin(GPIOD, LD5_Pin);
-//			HAL_Delay(500);
-//		}
-//
-//		HAL_GPIO_WritePin(GPIOD, LD3_Pin, GPIO_PIN_RESET);
-//		HAL_GPIO_WritePin(GPIOD, LD4_Pin, GPIO_PIN_RESET);
-//		HAL_GPIO_WritePin(GPIOD, LD5_Pin, GPIO_PIN_RESET);
-//		HAL_GPIO_WritePin(GPIOD, LD6_Pin, GPIO_PIN_RESET);
+
 		break;
 	default:
 		break;
